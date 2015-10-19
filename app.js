@@ -16,6 +16,3 @@ program.parse(process.argv);
 
 console.log('f', program.file);
 console.log('g', program.directory);
-
-let test = new Tester();
-test.test();
