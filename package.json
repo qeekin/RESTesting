@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "babel": "^5.8.23",
+    "bluebird": "^2.10.2",
     "chai": "^3.3.0",
     "commander": "^2.9.0",
     "isparta": "^3.1.0",
