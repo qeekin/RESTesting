@@ -4,14 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --compilers js:babel/register",
+    "test-cov": "./node_modules/.bin/babel-node ./node_modules/.bin/isparta cover ./node_modules/.bin/_mocha"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel": "^5.8.23",
+    "chai": "^3.3.0",
+    "commander": "^2.9.0",
+    "isparta": "^3.1.0",
+    "mocha": "^2.3.3",
     "request": "^2.65.0",
     "should": "^7.1.0",
     "supertest": "^1.1.0",
     "yamljs": "^0.2.4"
+  },
+  "devDependencies": {
+    "debug": "^2.2.0",
+    "standard": "^5.3.1"
   }
 }
