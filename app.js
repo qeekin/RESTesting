@@ -1,5 +1,6 @@
 import program from 'commander';
 import Tester from './Tester/Tester.js';
+import request from 'request';
 
 // define commands
 program
@@ -16,3 +17,6 @@ program.parse(process.argv);
 
 console.log('f', program.file);
 console.log('g', program.directory);
+
+let tester = new Tester();
+tester.run();

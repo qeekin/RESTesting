@@ -1,9 +1,9 @@
 import path from 'path';
 import Promise from 'bluebird';
-import request from 'request';
 
 let debug = require('debug')('Tester');
 let fs = Promise.promisifyAll(require('fs'));
+let request = Promise.promisify(require('request'));
 
 function getScenarioConfig(type, fpath) {
   try {
@@ -25,6 +25,30 @@ function getScenarioConfig(type, fpath) {
   }
 }
 
+function mocha_ajax(scenario, done) {
+  let req = scenario.shift();
+
+  let options = req[opt];
+
+  request(options)
+  .spread( (res, body) => {
+    
+    return;
+  })
+  .catch( err => {
+    console.error(err.stack);
+    return;
+  })
+  .then( () => {
+    // final
+    if(scenario.length > 0) {
+      mocha_ajax(scenario, done);
+    } else {
+      done();
+    }
+  });
+}
+
 export default class Tester {
   constructor(options = {type: 'folder', path: path.resolve(path.join(__dirname, '..', 'tester_config'))}) {
     try {
@@ -38,4 +62,17 @@ export default class Tester {
 
   }
 
+  run() {
+    // describe('test', function() {
+    //   it('should run', () => {
+    //     return request('http://localhost:3001/')
+    //     .spread( (res, body) => {
+    //       console.log(body);
+    //     })
+    //     .catch( err => {
+    //       console.log(err.stack);
+    //     });
+    //   })
+    // });
+  }
 }
