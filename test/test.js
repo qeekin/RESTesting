@@ -1,4 +1,5 @@
 import chai, {expect} from 'chai';
+import path from 'path';
 import Tester from '../Tester/Tester.js';
 
 describe('Tester', function(done) {
@@ -16,4 +17,16 @@ describe('Tester', function(done) {
     });
   });
 
+  context('Create a Tester instance: from a js file', function(done) {
+    it('should have a array property with a json objects', () => {
+      try {
+        let tester = new Tester();
+        expect(tester.scenarioList).to.be.instanceof(Array);
+        expect(tester.scenarioList[0]).to.have.property('case1');
+        expect(tester.scenarioList[1]).to.have.property('case2');
+      } catch(err) {
+        expect(err).to.be.empty;
+      }
+    });
+  });
 });

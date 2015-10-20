@@ -1,5 +1,6 @@
 import path from 'path';
 import Promise from 'bluebird';
+import request from 'request';
 
 let debug = require('debug')('Tester');
 let fs = Promise.promisifyAll(require('fs'));
