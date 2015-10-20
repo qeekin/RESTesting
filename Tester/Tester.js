@@ -29,14 +29,19 @@ function getScenarioConfig(type, fpath) {
 }
 
 function mocha_ajax(scenario, index) {
-  it(`testing...${index}`, done => {
+  // get the first request from a case(scenario).
+  // let req = scenario.shift();
+  let req = scenario[index];
 
-    // get the first request from a case(scenario).
-    // let req = scenario.shift();
-    let req = scenario[index];
+  let options = req['opt'];
+  let expectation = req['expect'];
+  let testing_options = options.options || {};
+  let delay = testing_options.delay || 0;
 
-    let options = req['opt'];
-    let expectation = req['expect'];
+  it(`testing...${index}`, function(done) {
+
+    // Avoid timeout error, add the timeout time.
+    this.timeout((delay + 2) * 1000);
 
     // variable for testing
     let $prev = null
@@ -44,28 +49,31 @@ function mocha_ajax(scenario, index) {
     ;
     if(req['variable']) $prev = req['variable'].$prev;
 
-    return request(options, (err, res, body) => {
+    setTimeout(() => {
+      request(options, (err, res, body) => {
 
-      if(index < scenario.length-1) {
-        // set next variables
-        scenario[index+1]['variable'] = {};
-        scenario[index+1]['variable'].$prev = body;
-      }
+        if(index < scenario.length-1) {
+          // set next variables
+          scenario[index+1]['variable'] = {};
+          scenario[index+1]['variable'].$prev = body;
+        }
 
-      $out = body;
-      if(req['variable']) req['variable'].$out = $out;
+        $out = body;
+        if(req['variable']) req['variable'].$out = $out;
 
-      if( expectation.callback && (typeof expectation.callback) === 'function' ) {
-        if(!err) expect(res.statusCode).to.be.equal(expectation.statusCode);
-        expectation.callback(err, res, $out, $prev, done);
-      } else {
-        if(err) throw new Error(err);
-        expect(res.statusCode).to.be.equal(expectation.statusCode);
+        if( expectation.callback && (typeof expectation.callback) === 'function' ) {
+          if(!err) expect(res.statusCode).to.be.equal(expectation.statusCode);
+          // expectation.callback(err, res, done);
+          expectation.callback(err, res, $out, $prev, done);
+        } else {
+          if(err) throw new Error(err);
+          expect(res.statusCode).to.be.equal(expectation.statusCode);
 
-        done();
-      }
+          done();
+        }
 
-    });
+      });
+    }, delay * 1000);
   });
 
   return scenario;
@@ -97,10 +105,10 @@ export default class Tester {
       describe(`Scenario: ${scenario_key}`, function() {
 
         let index = 0;
-        mocha_ajax(scenario[scenario_key], index);
+        mocha_ajax.call(this, scenario[scenario_key], index);
 
         if(index < scenario[scenario_key].length) {
-          mocha_ajax(scenario[scenario_key], ++index);
+          mocha_ajax.call(this, scenario[scenario_key], ++index);
         }
 
       });
