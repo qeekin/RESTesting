@@ -36,7 +36,7 @@ function mocha_ajax(scenario) {
   let options = req['opt'];
   let expectation = req['expect'];
 
-  it(`test-${scenario.length}`, done => {
+  it(`testing...${scenario.length}`, done => {
 
     return request(options, (err, res, body) => {
 
@@ -45,8 +45,6 @@ function mocha_ajax(scenario) {
         expectation.callback(err, res, body, done);
       } else {
         if(err) throw new Error(err);
-
-        expect(err).to.be.null;
         expect(res.statusCode).to.be.equal(expectation.statusCode);
 
         done();
