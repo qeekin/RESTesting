@@ -28,46 +28,25 @@ function getScenarioConfig(type, fpath) {
   }
 }
 
-function mocha_ajax(scenario, done) {
+function mocha_ajax(scenario) {
   // get the first request from a case(scenario).
   let req = scenario.shift();
-  console.log('a', req.opt);
+
   let options = req['opt'];
   let expectation = req['expect'];
 
-  request(options, (err, res, body) => {
-    if(err) throw new Error(err);
+  it(`test-${scenario.length}`, done => {
+    request(options, (err, res, body) => {
+      if(err) throw new Error(err);
 
-    expect(err).to.be.null;
-    expect(res.statusCode).to.be.equal(expectation.statusCode);
+      expect(err).to.be.null;
+      expect(res.statusCode).to.be.equal(expectation.statusCode);
 
-    if(scenario.length > 0) {
-      return mocha_ajax(scenario, done);
-    } else {
-      return done();
-    }
+      done();
 
+    });
   });
 
-  // request(options)
-  // .spread( (res, body) => {
-  //   console.log('code', res.statusCode);
-  //   expect(res.statusCode).to.be.equal(expectation.statusCode);
-  //   return;
-  // })
-  // .catch( err => {
-  //   console.error(err.stack);
-  //   // throw new Error(err);
-  //   return;
-  // })
-  // .then( () => {
-  //   // final
-  //   if(scenario.length > 0) {
-  //     mocha_ajax(scenario, done);
-  //   } else {
-  //     done();
-  //   }
-  // });
 }
 
 // Class: Tester
@@ -85,12 +64,23 @@ export default class Tester {
   }
 
   run() {
+
     let self = this;
-    describe('case1', function() {
-      console.log(self.scenarioList);
-      it('testing...', done => {
-        mocha_ajax(self.scenarioList[0].case1, done);
-      })
+
+    self.scenarioList.forEach( scenario => {
+
+      let scenario_key = Object.keys(scenario)[0];
+
+      describe(`Scenario: ${scenario_key}`, function() {
+
+        mocha_ajax(scenario[scenario_key]);
+
+        if(scenario[scenario_key].length > 0) {
+          mocha_ajax(scenario[scenario_key]);
+        }
+
+      });
     });
+
   }
 }
