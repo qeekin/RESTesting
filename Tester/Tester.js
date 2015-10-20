@@ -29,6 +29,7 @@ function getScenarioConfig(type, fpath) {
 }
 
 function mocha_ajax(scenario) {
+
   // get the first request from a case(scenario).
   let req = scenario.shift();
 
@@ -36,13 +37,20 @@ function mocha_ajax(scenario) {
   let expectation = req['expect'];
 
   it(`test-${scenario.length}`, done => {
-    request(options, (err, res, body) => {
-      if(err) throw new Error(err);
 
-      expect(err).to.be.null;
-      expect(res.statusCode).to.be.equal(expectation.statusCode);
+    return request(options, (err, res, body) => {
 
-      done();
+      if( expectation.callback && (typeof expectation.callback) === 'function' ) {
+        if(!err) expect(res.statusCode).to.be.equal(expectation.statusCode);
+        expectation.callback(err, res, body, done);
+      } else {
+        if(err) throw new Error(err);
+
+        expect(err).to.be.null;
+        expect(res.statusCode).to.be.equal(expectation.statusCode);
+
+        done();
+      }
 
     });
   });
@@ -80,6 +88,7 @@ export default class Tester {
         }
 
       });
+
     });
 
   }
