@@ -54,11 +54,6 @@ function mocha_ajax(scenario, index) {
     setTimeout(() => {
       request(options, (err, res, body) => {
 
-        if(index < scenario.length-1) {
-          // set next variables
-          scenario[index+1]['variable'] = {};
-          scenario[index+1]['variable'].$prev = body;
-        }
 
         if(expectation.json && body) {
           try {
@@ -68,6 +63,12 @@ function mocha_ajax(scenario, index) {
           }
         } else {
           $out = body;
+        }
+
+        if(index < scenario.length-1) {
+          // set next variables
+          scenario[index+1]['variable'] = {};
+          scenario[index+1]['variable'].$prev = $out;
         }
 
         if(req['variable']) req['variable'].$out = $out;
