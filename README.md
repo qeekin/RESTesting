@@ -2,15 +2,16 @@
 
 ## opt
   * `url`
-  * `method`
+  * `method`: (default: GET)
   * `headers`
   * `json`
   * `qs`
-  * `options`
-    - `delay`
-    - `retry`
-    - `interval`
+  * `options`: About testing configuration
+    - `delay`: (default: 0)
+    - `retry`: (default: false)
+    - `interval`: (default: 2000)
 
 ## expect
-  * `statusCode`
+  * `statusCode`: (default: 200)
+  * `json`: (default: true)
   * `callback(err, res, $out, $prev, done)`

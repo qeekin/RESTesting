@@ -38,6 +38,7 @@ function mocha_ajax(scenario, index) {
   let testing_options = options.options || {};
   let delay = testing_options.delay || 0;
   let code = expectation.statusCode || 200;
+  expectation.json = expectation.json || true;
 
   it(`testing...${index}`, function(done) {
 
@@ -59,12 +60,21 @@ function mocha_ajax(scenario, index) {
           scenario[index+1]['variable'].$prev = body;
         }
 
-        $out = body;
+        if(expectation.json && body) {
+          try {
+            $out = JSON.parse(body);
+          } catch(err) {
+            $out = body;
+          }
+        } else {
+          $out = body;
+        }
+
         if(req['variable']) req['variable'].$out = $out;
 
         if( expectation.callback && (typeof expectation.callback) === 'function' ) {
           if(!err) expect(res.statusCode).to.be.equal(code);
-          // expectation.callback(err, res, done);
+
           expectation.callback(err, res, $out, $prev, done);
         } else {
           if(err) throw new Error(err);
