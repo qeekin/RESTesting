@@ -121,7 +121,8 @@ function mocha_ajax(scenario, index) {
 
 // Class: Tester
 export default class Tester {
-  constructor(options = {type: 'folder', path: path.resolve(path.join(__dirname, '..', 'tester_config'))}) {
+  constructor(options = {type: 'folder', path: path.resolve(path.join(process.cwd(), 'tester_config'))}) {
+    console.log(options.path);
     try {
       this.type = /^(:?folder|file)$/.test(options.type)? options.type: 'folder';
       this.path = options.path? path.resolve(options.path): path.resolve(path.join(__dirname, '..', 'tester_config'));
