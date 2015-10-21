@@ -88,11 +88,11 @@ function mocha_ajax(scenario, index) {
           } catch(errorFromCallback) {
             // retry the request
             if(testing_options.retry > 0) {
-              console.log(testing_options.retry);
               testing_options.retry--;
               testing_options.delay = 0;
-              testing_options.name = 'retry ' + testing_options.name;
+              // testing_options.name = 'retry ' + testing_options.name;
 
+              console.log(`retry ${testing_options.name}`);
               setTimeout(ajax.bind(self), testing_options.interval);
             } else {
               // must throw it to trigger error task of mocha.
