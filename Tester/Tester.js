@@ -29,21 +29,26 @@ function getScenarioConfig(type, fpath) {
 }
 
 function mocha_ajax(scenario, index) {
+
   // get the first request from a case(scenario).
-  // let req = scenario.shift();
   let req = scenario[index];
 
   let options = req['opt'];
-  let expectation = req['expect'];
-  let testing_options = options.options || {};
-  let delay = testing_options.delay || 0;
-  let code = expectation.statusCode || 200;
-  expectation.json = expectation.json || true;
 
-  it(`testing...${index}`, function(done) {
+  let testing_options = options.options || {};
+  testing_options.delay = testing_options.delay || 0;
+  testing_options.name = testing_options.name || index;
+  testing_options.retry = testing_options.retry || 0;
+  testing_options.interval = testing_options.interval || 2000;
+
+  let expectation = req['expect'];
+  expectation.statusCode = expectation.statusCode || 200;
+  expectation.json = expectation.json !== false;
+
+  it(`testing...${testing_options.name}`, function(done) {
 
     // To Avoid the timeout error, expands the timeout time.
-    this.timeout((delay + 2) * 1000);
+    this.timeout((testing_options.delay + 2000));
 
     // variable for testing
     let $prev = null
@@ -51,9 +56,8 @@ function mocha_ajax(scenario, index) {
     ;
     if(req['variable']) $prev = req['variable'].$prev;
 
-    setTimeout(() => {
+    function ajax(retry = 0, interval = 2000) {
       request(options, (err, res, body) => {
-
 
         if(expectation.json && body) {
           try {
@@ -74,18 +78,27 @@ function mocha_ajax(scenario, index) {
         if(req['variable']) req['variable'].$out = $out;
 
         if( expectation.callback && (typeof expectation.callback) === 'function' ) {
-          if(!err) expect(res.statusCode).to.be.equal(code);
+          if(!err) expect(res.statusCode).to.be.equal(expectation.statusCode);
 
-          expectation.callback(err, res, $out, $prev, done);
+          try {
+            expectation.callback(err, res, $out, $prev, done);
+          } catch(errorFromCallback) {
+
+            throw new Error(errorFromCallback);
+          }
+
         } else {
           if(err) throw new Error(err);
-          expect(res.statusCode).to.be.equal(code);
+          expect(res.statusCode).to.be.equal(expectation.statusCode);
 
           done();
         }
 
       });
-    }, delay * 1000);
+    }
+
+    // delay the request
+    setTimeout( ajax.bind(this, ), testing_options.delay);
   });
 
   return scenario;
