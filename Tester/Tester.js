@@ -112,7 +112,7 @@ function mocha_ajax(scenario, index) {
     }
 
     // delay the request
-    setTimeout( ajax.bind(this, ), testing_options.delay);
+    setTimeout( ajax.bind(self), testing_options.delay);
   });
 
   return scenario;

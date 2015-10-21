@@ -8,13 +8,15 @@ function run_mocha(type, path) {
 // define commands
 program
   .version('0.0.1')
-  .usage('[options] <file>')
-  .option('-f, --file <file>', 'Specify an alternate json file')
-  .option('-d, --directory <dir>', 'Specify an alternate directory')
-  .command('tester [file]')
-  .action( (file) => {
-      if(!file) return;
-      console.log('file', file);
-  })
+  .usage('[options] <File/Folder>')
+  .option('-f, --file <File>', 'Specify an alternate json file')
+  .option('-d, --directory <Dir>', 'Specify an alternate directory')
+  .parse(process.argv);
 
-program.parse(process.argv);
+if (program.file) {
+  run_mocha('file', program.file);
+} else if (program.directory) {
+  run_mocha('folder', program.directory);
+} else {
+  run_mocha('folder', 'default');
+}
