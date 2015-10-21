@@ -23,7 +23,7 @@ function getScenarioConfig(type, fpath) {
     }
 
   } catch(err) {
-    console.error(err.stack);
+    // console.error(err.stack);
     throw new Error('Fail to load config files.');
   }
 }

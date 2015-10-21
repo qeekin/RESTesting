@@ -2,9 +2,10 @@
 
 var program = require('commander');
 var spawn = require('child_process').spawn;
+var path = require('path');
 
-function run_mocha(type, path) {
-  spawn('./node_modules/.bin/mocha', ['--compilers', 'js:babel/register', '--type', type, '--path', path,'app.js'], { stdio: 'inherit' });
+function run_mocha(type, fpath) {
+  spawn('./node_modules/.bin/mocha', ['--compilers', 'js:babel/register', '--type', type, '--path', fpath,'app.js'], { stdio: 'inherit' });
 }
 
 // define commands
