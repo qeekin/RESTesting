@@ -30,6 +30,8 @@ function getScenarioConfig(type, fpath) {
 
 function mocha_ajax(scenario, index) {
 
+  let self = this;
+
   // get the first request from a case(scenario).
   let req = scenario[index];
 
@@ -48,7 +50,8 @@ function mocha_ajax(scenario, index) {
   it(`testing...${testing_options.name}`, function(done) {
 
     // To Avoid the timeout error, expands the timeout time.
-    this.timeout((testing_options.delay + 2000));
+    let timeout = (testing_options.retry + 1) * testing_options.interval + testing_options.delay + 2000;
+    this.timeout(timeout);
 
     // variable for testing
     let $prev = null
@@ -56,7 +59,7 @@ function mocha_ajax(scenario, index) {
     ;
     if(req['variable']) $prev = req['variable'].$prev;
 
-    function ajax(retry = 0, interval = 2000) {
+    function ajax() {
       request(options, (err, res, body) => {
 
         if(expectation.json && body) {
@@ -83,8 +86,19 @@ function mocha_ajax(scenario, index) {
           try {
             expectation.callback(err, res, $out, $prev, done);
           } catch(errorFromCallback) {
+            // retry the request
+            if(testing_options.retry > 0) {
+              console.log(testing_options.retry);
+              testing_options.retry--;
+              testing_options.delay = 0;
+              testing_options.name = 'retry ' + testing_options.name;
 
-            throw new Error(errorFromCallback);
+              setTimeout(ajax.bind(self), testing_options.interval);
+            } else {
+              // must throw it to trigger error task of mocha.
+              throw new Error(errorFromCallback);
+            }
+
           }
 
         } else {

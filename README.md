@@ -14,6 +14,7 @@
     - `delay`: (default: 0)
     - `retry`: (default: false)
     - `interval`: (default: 2000)
+    - `timeout`: (default: by formula, depend on delay, retry times and interval)
 
 ## expect
   * `statusCode`: (default: 200)
