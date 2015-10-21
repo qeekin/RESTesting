@@ -37,10 +37,11 @@ function mocha_ajax(scenario, index) {
   let expectation = req['expect'];
   let testing_options = options.options || {};
   let delay = testing_options.delay || 0;
+  let code = expectation.statusCode || 200;
 
   it(`testing...${index}`, function(done) {
 
-    // Avoid timeout error, add the timeout time.
+    // To Avoid the timeout error, expands the timeout time.
     this.timeout((delay + 2) * 1000);
 
     // variable for testing
@@ -62,12 +63,12 @@ function mocha_ajax(scenario, index) {
         if(req['variable']) req['variable'].$out = $out;
 
         if( expectation.callback && (typeof expectation.callback) === 'function' ) {
-          if(!err) expect(res.statusCode).to.be.equal(expectation.statusCode);
+          if(!err) expect(res.statusCode).to.be.equal(code);
           // expectation.callback(err, res, done);
           expectation.callback(err, res, $out, $prev, done);
         } else {
           if(err) throw new Error(err);
-          expect(res.statusCode).to.be.equal(expectation.statusCode);
+          expect(res.statusCode).to.be.equal(code);
 
           done();
         }
