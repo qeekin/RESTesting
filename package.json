@@ -1,15 +1,18 @@
 {
   "name": "tester",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "a api auto testing tool",
   "scripts": {
     "test": "./node_modules/.bin/mocha --compilers js:babel/register",
     "test-cov": "./node_modules/.bin/babel-node ./node_modules/.bin/isparta cover ./node_modules/.bin/_mocha",
-    "start": "./node_modules/.bin/mocha entry.js"
+    "start": "node boot.js"
   },
-  "author": "",
+  "bin": {
+    "tester": "boot.js"
+  },
+  "author": "Chiahao Lin",
   "license": "ISC",
+  "preferGlobal": true,
   "dependencies": {
     "babel": "^5.8.23",
     "bluebird": "^2.10.2",
