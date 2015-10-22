@@ -14,9 +14,11 @@
     - `delay`: (default: 0ms)
     - `retry`: (default: 0)
     - `interval`: (default: 2000ms)
-    - `timeout`: Todo (default: by formula, depend on delay, retry times and interval)
+    - `timeout`: set timeout for each task (default: by formula, depends on delay, retry times and interval)
 
 ## expect
   * `statusCode`: (default: 200)
   * `json`: If enables this option, it will try to parse output to JSON format. (default: true)
   * `callback(err, res, $out, $prev, done)`
+
+# Issues

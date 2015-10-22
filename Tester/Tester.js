@@ -50,7 +50,7 @@ function mocha_ajax(scenario, index) {
   it(`testing...${testing_options.name}`, function(done) {
 
     // To Avoid the timeout error, expands the timeout time.
-    let timeout = (testing_options.retry + 1) * testing_options.interval + testing_options.delay + 2000;
+    let timeout = testing_options.timeout || ((testing_options.retry + 1) * testing_options.interval + testing_options.delay + 2000);
     this.timeout(timeout);
 
     // variable for testing
