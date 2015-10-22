@@ -1,4 +1,5 @@
 # Tester
+  Simple RESTful flow testing tool
 ## Install
 
     $ git clone git@gitlab.com:qnap/tester.git
@@ -47,6 +48,6 @@
 ### expect
   * `statusCode`: (default: 200)
   * `json`: If enables this option, it will try to parse output to JSON format. (default: true)
-  * `callback(err, res, $out, $prev, done)`
+  * `callback(err, res, $out, $prev, next)`
 
 ## Issues
