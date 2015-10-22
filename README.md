@@ -14,7 +14,7 @@
 
       -h, --help             output usage information
       -V, --version          output the version number
-      -f, --file <File>      Specify an alternate json file
+      -f, --file <File>      Specify an alternate js file
       -d, --directory <Dir>  Specify an alternate directory
 
 ## Uninstall
