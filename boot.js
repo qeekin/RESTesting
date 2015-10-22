@@ -5,7 +5,12 @@ var spawn = require('child_process').spawn;
 var path = require('path');
 
 function run_mocha(type, fpath) {
-  spawn('./node_modules/.bin/mocha', ['--compilers', 'js:babel/register', '--type', type, '--path', fpath,'app.js'], { stdio: 'inherit' });
+  var mocha_path = path.resolve(path.join(__dirname, '/node_modules/mocha/bin/mocha'));
+  try {
+    spawn(mocha_path, ['--compilers', 'js:babel/register', '--type', type, '--path', fpath, path.resolve(path.join(__dirname, 'app.js'))], { stdio: 'inherit' });
+  } catch(err) {
+    console.error(err);
+  }
 }
 
 // define commands

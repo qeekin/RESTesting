@@ -10,7 +10,7 @@ import request from 'request';
 // private functions
 function getScenarioConfig(type, fpath) {
   try {
-
+    console.log('Config path:', fpath);
     fpath = path.resolve(fpath);
     let stats = fs.statSync(fpath);
 
@@ -23,6 +23,7 @@ function getScenarioConfig(type, fpath) {
     }
 
   } catch(err) {
+    // process.exit();
     // console.error(err.stack);
     throw new Error('Fail to load config files.');
   }
@@ -93,8 +94,13 @@ function mocha_ajax(scenario, index) {
               // testing_options.name = 'retry ' + testing_options.name;
 
               console.log(`retry ${testing_options.name}`);
+
+              // retry
               setTimeout(ajax.bind(self), testing_options.interval);
             } else {
+              console.log('Input:', options);
+              console.log('Output:', $out);
+
               // must throw it to trigger error task of mocha.
               throw new Error(errorFromCallback);
             }
@@ -122,13 +128,12 @@ function mocha_ajax(scenario, index) {
 // Class: Tester
 export default class Tester {
   constructor(options = {type: 'folder', path: path.resolve(path.join(process.cwd(), 'tester_config'))}) {
-    console.log(options.path);
     try {
       this.type = /^(:?folder|file)$/.test(options.type)? options.type: 'folder';
       this.path = options.path? path.resolve(options.path): path.resolve(path.join(__dirname, '..', 'tester_config'));
       this.scenarioList = getScenarioConfig(options.type, options.path);
     } catch(err) {
-      console.error(err.stack);
+      // console.error(err.stack);
       throw new Error('constructor error');
     }
 
