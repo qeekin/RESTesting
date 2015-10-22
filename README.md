@@ -19,8 +19,8 @@
 
 ## Uninstall
 
-    $ cd path/tester && npm unlink
-    $ rm -r path/tester
+    $ cd <path>/tester && npm unlink
+    $ rm -r <path>/tester
 
 ## Configuration (`.js`)
   * Default folder: `tester_config/`
