@@ -19,7 +19,8 @@ function getScenarioConfig(type, fpath) {
                         .filter( file => /\.json$/.test(file) )
                         .map( file => require(path.resolve(path.join(fpath, file))));
     } else {
-      return [require(fpath)];
+      if(/\.json/.test(stats.filename)) return [require(fpath)];
+      else return [];
     }
 
   } catch(err) {
@@ -47,7 +48,7 @@ function mocha_ajax(scenario, index) {
   let expectation = req['expect'];
   expectation.statusCode = expectation.statusCode || 200;
   expectation.json = expectation.json !== false;
-  // let string of callback to be a function.
+  // let content of callback to be a function.
   if(expectation.callback) {
     try {
       expectation.callback = new Function('err', 'res', '$out', '$prev', 'next', expectation.callback);
