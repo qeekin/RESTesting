@@ -16,7 +16,7 @@ function getScenarioConfig(type, fpath) {
 
     if(stats.isDirectory()) {
       return fs.readdirSync(fpath)
-                        .filter( file => /.js$/.test(file) )
+                        .filter( file => /\.json$/.test(file) )
                         .map( file => require(path.resolve(path.join(fpath, file))));
     } else {
       return [require(fpath)];
@@ -47,6 +47,14 @@ function mocha_ajax(scenario, index) {
   let expectation = req['expect'];
   expectation.statusCode = expectation.statusCode || 200;
   expectation.json = expectation.json !== false;
+  // let string of callback to be a function.
+  if(expectation.callback) {
+    try {
+      expectation.callback = new Function('err', 'res', '$out', '$prev', 'next', expectation.callback);
+    } catch(err) {
+      throw new Error('callback property has wrong format.');
+    }
+  }
 
   it(`testing...${testing_options.name}`, function(done) {
 
@@ -152,7 +160,7 @@ export default class Tester {
         let index = 0;
         mocha_ajax.call(this, scenario[scenario_key], index);
 
-        if(index < scenario[scenario_key].length) {
+        if(index < scenario[scenario_key].length - 1) {
           mocha_ajax.call(this, scenario[scenario_key], ++index);
         }
 
