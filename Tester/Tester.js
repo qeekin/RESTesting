@@ -19,8 +19,11 @@ function getScenarioConfig(type, fpath) {
                         .filter( file => /\.json$/.test(file) )
                         .map( file => require(path.resolve(path.join(fpath, file))));
     } else {
-      if(/\.json/.test(stats.filename)) return [require(fpath)];
-      else return [];
+      if(stats.isFile() && /\.json$/.test(fpath)) {
+        return [require(fpath)];
+      } else {
+        return [];
+      }
     }
 
   } catch(err) {
@@ -141,6 +144,11 @@ export default class Tester {
       this.type = /^(:?folder|file)$/.test(options.type)? options.type: 'folder';
       this.path = options.path? path.resolve(options.path): path.resolve(path.join(__dirname, '..', 'tester_config'));
       this.scenarioList = getScenarioConfig(options.type, options.path);
+      console.log(this.scenarioList);
+      // test
+      // let json = require('../tester_config/case.json');
+      // this.scenarioList = json.result;
+
     } catch(err) {
       // console.error(err.stack);
       throw new Error('constructor error');
