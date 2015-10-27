@@ -24,11 +24,14 @@ program
   .version('0.0.1')
   .usage('[options] <File/Folder>')
   .option('-f, --file <File>', 'Specify an alternate json file')
+  .option('-m, --multi <File>', 'Specify an alternate json file with multi scenarios')
   .option('-d, --directory <Dir>', 'Specify an alternate directory')
   .parse(process.argv);
 
 if (program.file) {
   run_mocha('file', program.file);
+} else if (program.multi) {
+  run_mocha('multi', program.multi);
 } else if (program.directory) {
   run_mocha('folder', program.directory);
 } else {

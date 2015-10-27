@@ -20,10 +20,14 @@ function getScenarioConfig(type, fpath) {
                         .map( file => require(path.resolve(path.join(fpath, file))));
     } else {
       if(stats.isFile() && /\.json$/.test(fpath)) {
-        return [require(fpath)];
-      } else {
-        return [];
+        if (type === 'file') {
+          return [require(fpath)];
+        } else {
+          let obj = require(fpath);
+          return obj['result'];
+        }
       }
+      return [];
     }
 
   } catch(err) {
@@ -141,7 +145,7 @@ function mocha_ajax(scenario, index) {
 export default class Tester {
   constructor(options = {type: 'folder', path: path.resolve(path.join(process.cwd(), 'tester_config'))}) {
     try {
-      this.type = /^(:?folder|file)$/.test(options.type)? options.type: 'folder';
+      this.type = /^(:?folder|file|multi)$/.test(options.type)? options.type: 'folder';
       this.path = options.path? path.resolve(options.path): path.resolve(path.join(__dirname, '..', 'tester_config'));
       this.scenarioList = getScenarioConfig(options.type, options.path);
 
