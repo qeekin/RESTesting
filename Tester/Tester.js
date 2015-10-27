@@ -144,7 +144,7 @@ export default class Tester {
       this.type = /^(:?folder|file)$/.test(options.type)? options.type: 'folder';
       this.path = options.path? path.resolve(options.path): path.resolve(path.join(__dirname, '..', 'tester_config'));
       this.scenarioList = getScenarioConfig(options.type, options.path);
-      console.log(this.scenarioList);
+
       // test
       // let json = require('../tester_config/case.json');
       // this.scenarioList = json.result;
