@@ -159,11 +159,9 @@ export default class Tester {
       describe(`Scenario: ${scenario_key}`, function() {
 
         let index = 0;
-        mocha_ajax.call(this, scenario[scenario_key], index);
-
-        if(index < scenario[scenario_key].length - 1) {
-          mocha_ajax.call(this, scenario[scenario_key], ++index);
-        }
+        scenario[scenario_key].forEach( task => {
+          mocha_ajax.call(this, scenario[scenario_key], index++);
+        });
 
       });
 
