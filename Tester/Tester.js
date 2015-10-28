@@ -114,12 +114,12 @@ function mocha_ajax(scenario, index) {
               // retry
               setTimeout(ajax.bind(self), testing_options.interval);
             } else {
-              console.log('Input:', options);
-              console.log('Output:', $out);
+              console.error('Task error:');
+              console.error(errorFromCallback);
+              console.error('Input:', options);
+              console.error('Output:', $out);
 
               // must throw it to trigger error task of mocha.
-              console.error('GGGGGGGGGGGGGGGG');
-              console.error(errorFromCallback);
               throw new Error(errorFromCallback);
             }
 
@@ -127,7 +127,7 @@ function mocha_ajax(scenario, index) {
 
         } else {
           if(err) {
-            console.error(err);
+            console.error(err.stack);
             throw new Error(err);
           }
 
