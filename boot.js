@@ -34,6 +34,7 @@ function run_mocha(type, fpath) {
 }
 
 // define commands
+var isSubCommand = false;
 program
   .version('0.0.1')
   .usage('[options] <File/Folder>')
@@ -46,6 +47,7 @@ program
   .description('Create a json file from the url')
   .option('-o, --output <Path>', 'Export path')
   .action(function(_url, options) {
+    isSubCommand = true;
     var fpath = options.output;
     if(fpath) {
       gen_json(_url, fpath, function() {});
@@ -57,12 +59,14 @@ program
 
 program.parse(process.argv);
 
-if (program.file) {
-  run_mocha('file', program.file);
-} else if (program.multi) {
-  run_mocha('multi', program.multi);
-} else if (program.directory) {
-  run_mocha('folder', program.directory);
-} else {
-  run_mocha('folder', 'default');
+if(!isSubCommand) {
+  if (program.file) {
+    run_mocha('file', program.file);
+  } else if (program.multi) {
+    run_mocha('multi', program.multi);
+  } else if (program.directory) {
+    run_mocha('folder', program.directory);
+  } else {
+    run_mocha('folder', 'default');
+  }
 }
