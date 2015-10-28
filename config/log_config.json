@@ -1,0 +1,15 @@
+{
+  "appenders": [
+      {
+          "type": "file",
+          "filename": "./logs/tester.log",
+          "maxLogSize": 4096,
+          "backups": 3,
+          "category": [ "tester-logger","console" ]
+      },
+      {
+          "type": "console"
+      }
+  ],
+  "replaceConsole": true
+}

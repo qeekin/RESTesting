@@ -1,11 +1,11 @@
 #! /usr/bin/env node
 
 var program = require('commander');
-var spawn = require('child_process').spawn;
+var spawn   = require('child_process').spawn;
 var request = require('request');
-var path = require('path');
-var url = require('url');
-var fs = require('fs');
+var path    = require('path');
+var url     = require('url');
+var fs      = require('fs');
 
 function gen_json(_url, fpath, callback) {
   request.get(_url, function(err, res, body) {

@@ -1,6 +1,10 @@
 import Tester from './Tester/Tester.js';
+import log4js from 'log4js';
 
 let argv = require('minimist')(process.argv.slice(2));
+
+// log4js
+log4js.configure(require('./config/log_config.json'));
 
 let tester = null;
 

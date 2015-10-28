@@ -109,7 +109,7 @@ function mocha_ajax(scenario, index) {
               testing_options.delay = 0;
               // testing_options.name = 'retry ' + testing_options.name;
 
-              console.log(`retry ${testing_options.name}`);
+              console.warn(`retry ${testing_options.name}`);
 
               // retry
               setTimeout(ajax.bind(self), testing_options.interval);
@@ -118,13 +118,19 @@ function mocha_ajax(scenario, index) {
               console.log('Output:', $out);
 
               // must throw it to trigger error task of mocha.
+              console.error('GGGGGGGGGGGGGGGG');
+              console.error(errorFromCallback);
               throw new Error(errorFromCallback);
             }
 
           }
 
         } else {
-          if(err) throw new Error(err);
+          if(err) {
+            console.error(err);
+            throw new Error(err);
+          }
+
           expect(res.statusCode).to.be.equal(expectation.statusCode);
 
           done();
