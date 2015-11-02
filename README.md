@@ -1,6 +1,6 @@
 # Tester
   Simple RESTful flow testing tool
-  
+
 ## Install
 
     $ git clone git@gitlab.com:qnap/tester.git
@@ -59,8 +59,8 @@
 ## Configuration (`.json`)
   * Default folder: `tester_config/`
   * Format: read  
-    * [case_short.json ](https://gitlab.com/qnap/tester/blob/master/tester_config/case_short.json)(single scenario, use `-f`)
-    * [case_multi.json](https://gitlab.com/qnap/tester/blob/master/tester_config/case_multi.json)(multiple scenarios, use `-m`)
+    * [case_short.json ]()(single scenario, use `-f`)
+    * [case_multi.json]()(multiple scenarios, use `-m`)
 
 
 
