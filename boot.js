@@ -13,6 +13,11 @@ function gen_json(_url, fpath, callback) {
     try {
       var obj = JSON.parse(body);
       fpath = path.resolve(fpath);
+
+      var isSuffixes = /\.json$/.test(fpath);
+      fpath = (isSuffixes)? fpath: [fpath, '.json'].join('');
+      console.log(fpath);
+
       fs.writeFile(fpath, JSON.stringify(obj), function(err) {
         console.log('A json file has been created.');
         process.exit();
