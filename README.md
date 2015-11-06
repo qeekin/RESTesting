@@ -3,7 +3,7 @@
 
 ## Install
 
-    $ git clone git@gitlab.com:qnap/tester.git
+    $ git clone https://github.com/qeekin/RESTesting.git
     $ cd tester && npm install
     $ npm link
 
